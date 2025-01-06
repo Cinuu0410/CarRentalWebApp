@@ -8,7 +8,6 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 @Service
 public class UserService {
-
     @Autowired
     private UserRepository userRepository;
 

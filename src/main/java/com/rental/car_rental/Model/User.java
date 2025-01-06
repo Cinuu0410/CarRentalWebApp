@@ -1,5 +1,4 @@
 package com.rental.car_rental.Model;
-
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -17,9 +16,7 @@ public class User {
     private String lastName;
     private String email;
     private String role;
-
-    public User() {}
-
     @Transient
     private String rawPassword;
+
 }
