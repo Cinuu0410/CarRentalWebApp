@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Wypożyczalnia samochodów</title>
+    <link rel="stylesheet" th:href="@{/css/register_page_style.css}">
+    <script>
+        setTimeout(function() {
+            window.location.href = "/main_page";
+        }, 4000);
+    </script>
+</head>
+<body>
+<div class="register-box">
+    <div class="alert success" th:if="${successMessage}">
+        <p th:text="${successMessage}"></p>
+    </div>
+</div>
+</body>
+</html>

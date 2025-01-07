@@ -4,7 +4,8 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-    <changeSet id="app-user-create" author="admin">
+<!--  Tabela app_user  -->
+    <changeSet id="app-user-table-create" author="admin">
         <createTable tableName="app_user">
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
@@ -30,5 +31,27 @@
         </createTable>
     </changeSet>
 
-
+<!--  Tabela Report  -->
+    <changeSet id="report-table-create" author="admin">
+        <createTable tableName="report">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name_of_submitter" type="VARCHAR(255)">
+                <constraints unique="false" nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(255)">
+                <constraints unique="false" nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(255)">
+                <constraints unique="false" nullable="false"/>
+            </column>
+            <column name="subject" type="VARCHAR(255)">
+                <constraints unique="false" nullable="false"/>
+            </column>
+            <column name="is_resolved" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
 </databaseChangeLog>

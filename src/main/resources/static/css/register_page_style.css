@@ -124,9 +124,6 @@ a:hover span:nth-child(4) {
     animation: animateSpan 1s infinite;
 }
 
-a button {
-    display: none;
-}
 
 @keyframes fadeIn {
     0% {
@@ -158,4 +155,32 @@ a button {
         right: 100%;
         bottom: 100%;
     }
+}
+
+/* Stylowanie alertów */
+.alert {
+    width: 100%;
+    margin-bottom: 20px; /* Zmniejszamy margines, by alerty nie były za daleko */
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    text-align: center;
+    color: #fff;
+    margin-top: 10px; /* Dodajemy trochę przestrzeni od góry */
+    position: relative;
+}
+
+/* Tło dla alertów */
+.alert.success {
+    background-color: #4CAF50;
+}
+
+.alert.error {
+    background-color: #f44336;
+}
+
+/* Wycentrowanie alertu w formularzu */
+.register-box .alert {
+    margin-left: auto;
+    margin-right: auto;
 }
