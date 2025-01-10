@@ -1,23 +1,30 @@
 package com.rental.car_rental.Controller;
 
 import com.rental.car_rental.Enum.UserRole;
+import com.rental.car_rental.Model.Cars;
 import com.rental.car_rental.Model.User;
+import com.rental.car_rental.Service.CarService;
 import com.rental.car_rental.Service.UserService;
 import jakarta.servlet.http.HttpSession;
+import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.math.BigDecimal;
-import java.util.List;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
+@Data
 public class CarRentalSystemController {
 
     @Autowired
-    private UserService userService;
+    private final UserService userService;
+    private final CarService carService;
+
+
 
     @GetMapping("/main_page")
     public String mainPage(Model model, HttpSession session) {
@@ -91,5 +98,25 @@ public class CarRentalSystemController {
             return "redirect:/login";
         }
         return "panel";
+    }
+
+    @PostMapping("/addCar")
+    public String addCars(@RequestParam("carNumber") String carNumber,
+                          @RequestParam("carBrand") String carBrand,
+                          @RequestParam("carAvailable") boolean carAvailable) {
+        Cars newCar = new Cars();
+        newCar.setNumber(Long.valueOf(carNumber));
+        newCar.setBrand(carBrand);
+        newCar.setAvailable(carAvailable);
+
+        carService.saveCar(newCar);
+
+        return "redirect:/panel"; // Lub inna strona docelowa po dodaniu roweru
+    }
+    @PostMapping("/deleteBike/{CarId}")
+    public String deleteBike(@PathVariable Long carId) {
+        carService.deleteCar(carId);
+
+        return "redirect:/panel"; // Lub inna strona docelowa po usunięciu roweru
     }
 }

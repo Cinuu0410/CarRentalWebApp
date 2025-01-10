@@ -57,28 +57,28 @@
     </div>
 </div>
 
-<div class="bikesList">
+<div class="carsList">
     <table>
         <thead>
         <tr>
             <th>Numer Samochodu</th>
             <th>Marka</th>
             <th>Dostępność</th>
-            <th>Opcje</th> <!-- Nowa kolumna dla przycisku "Zarezerwuj" -->
+<!--            <th>Opcje</th> &lt;!&ndash; Nowa kolumna dla przycisku "Zarezerwuj" &ndash;&gt;-->
         </tr>
         </thead>
         <tbody>
         <th:block th:each="car : ${getAllCars}">
             <tr>
-                <td th:text="${car.number}">Numer roweru</td>
+                <td th:text="${car.number}">Numer samochodu</td>
                 <td th:text="${car.brand}">Marka</td>
                 <td th:text="${car.available ? 'Dostępny' : 'Niedostępny'}">Dostępność</td>
-                <td>
-                    <button class="btn btn-primary">Edytuj</button>
-                    <form th:action="@{'/deleteBike/' + ${car.id}}" method="post" style="display: inline;">
-                        <button class="btn btn-danger" type="submit">Usuń</button>
-                    </form>
-                </td>
+<!--                <td>-->
+<!--                    <button class="btn btn-primary">Edytuj</button>-->
+<!--                    <form th:action="@{'/deleteCars/' + ${car.id}}" method="post" style="display: inline;">-->
+<!--                        <button class="btn btn-danger" type="submit">Usuń</button>-->
+<!--                    </form>-->
+<!--                </td>-->
             </tr>
         </th:block>
         </tbody>
@@ -87,7 +87,7 @@
 <div th:if="${errorMessage}" class="alert alert-danger">
     <p th:text="${errorMessage}"></p>
 </div>
-<div class="add-bike-form">
+<div class="add-car-form">
     <h3>Dodaj Samochód</h3>
     <!-- Zmień atrybut action na Twój endpoint backendowy do dodawania roweru -->
     <form action="/addCar" method="post">
