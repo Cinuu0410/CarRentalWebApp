@@ -21,5 +21,13 @@
             <column name="password" value="abe31fe1a2113e7e8bf174164515802806d388cf4f394cceace7341a182271ab"/> <!-- haslo -->
             <column name="role" value="Administrator"/>
         </insert>
+        <insert tableName="app_user">
+            <column name="first_name" value = "Da"/>
+            <column name="last_name" value = "Sz"/>
+            <column name="email" value="d.szalajj@gmail.com"/>
+            <column name="username" value="Uzytkownik"/>
+            <column name="password" value="abe31fe1a2113e7e8bf174164515802806d388cf4f394cceace7341a182271ab"/> <!-- haslo -->
+            <column name="role" value="Uzytkownik"/>
+        </insert>
     </changeSet>
 </databaseChangeLog>
