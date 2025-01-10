@@ -32,15 +32,19 @@
         </h1>
 
         <div class="auth-buttons">
-            <div class="auth-buttons">
+
                 <span th:if="${loggedInUser}">
+                    <span th:if="${role eq 'Administrator'}">
+                    <button type="button" class="btn btn-secondary" onclick="panel()">Panel</button>
+                </span>
                     <button type="button" class="btn btn-secondary logout-button" onclick="logout()">Wyloguj się</button>
                 </span>
-            </div>
+
             <span th:unless="${loggedInUser}">
                 <button type="button" class="register-button" onclick="redirectToRegister()">Rejestracja</button>
                 <button type="button" class="login-button" onclick="redirectToLogin()">Logowanie</button>
             </span>
+
         </div>
     </div>
 </header>
@@ -79,7 +83,12 @@
         <h2>Wynajem samochodów osobowych</h2>
         <p class="lead">Oferujemy szeroką gamę samochodów osobowych na wynajem, idealnych na każdą okazję. Niezależnie od tego, czy potrzebujesz pojazdu na krótki wypad, czy długoterminowy wynajem, mamy idealne rozwiązanie dla Ciebie. Nasze auta są nowoczesne, komfortowe i bezpieczne, a nasza oferta dostosowana jest do różnych potrzeb i budżetów.</p>
         <p>Wynajem samochodów to wygodny sposób na podróżowanie. Nasza flota obejmuje różne modele – od miejskich aut po przestronne pojazdy rodzinne. Wszystkie pojazdy są regularnie serwisowane i utrzymywane w doskonałym stanie. Ciesz się podróżami bez trosk o transport – wynajmij samochód już dziś!</p>
+        <span th:if="${loggedInUser}">
+        <a class="btn btn-primary" onclick="cars()">Zarezerwuj teraz</a>
+        </span>
+        <span th:unless="${loggedInUser}">
         <a class="btn btn-primary" onclick="redirectToLogin()">Zarezerwuj teraz</a>
+        </span>
     </div>
 </div>
 
@@ -100,6 +109,12 @@
     }
     function logout() {
         window.location.href = "/logout";
+    }
+    function panel(){
+        window.location.href = "/panel";
+    }
+    function cars(){
+        window.location.href = "/cars";
     }
 </script>
 </body>

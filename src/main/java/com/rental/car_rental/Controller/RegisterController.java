@@ -37,7 +37,8 @@ public class RegisterController {
 
         session.setAttribute("username", username);
 
-        redirectAttributes.addFlashAttribute("successMessage", "Rejestracja udana! Za chwilę zostaniesz przekierowany na stronę logowania.");
+        redirectAttributes.addFlashAttribute("successMessage", "Rejestracja udana!");
+        redirectAttributes.addFlashAttribute("successMessage2", "Za chwilę zostaniesz przekierowany na stronę logowania.");
 
         return "redirect:/register/success";
     }
