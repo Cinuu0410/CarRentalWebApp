@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.math.BigDecimal;
+import java.util.List;
+
 @Controller
 @Data
 public class CarRentalSystemController {
@@ -91,13 +94,38 @@ public class CarRentalSystemController {
             // Dodaj informacje o zalogowanym użytkowniku do modelu
             model.addAttribute("loggedInUser", loggedInUser);
             model.addAttribute("role", loggedRole);
-
+            List<Cars> getAllCars = carService.getAllCars();
+            model.addAttribute("getAllCars", getAllCars);
 
         }
         else {
             return "redirect:/login";
         }
         return "panel";
+    }
+    @GetMapping("/rent")
+    public String rentPage(Model model, HttpSession session) {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+
+        if (loggedInUser != null) {
+            // Pobierz informacje o zalogowanym użytkowniku
+
+            // Dodaj informacje o zalogowanym użytkowniku do modelu
+            model.addAttribute("loggedInUser", loggedInUser);
+
+
+
+
+        }
+
+//        // Pobierz listę dostępnych rowerów z serwisu
+        List<Cars> availableCars = carService.getAvailableCars();
+        model.addAttribute("availableCars", availableCars);
+
+        List<Cars> getAllCars = carService.getAllCars();
+        model.addAttribute("getAllCars", getAllCars);
+
+        return "rent_page";
     }
 
     @PostMapping("/addCar")
@@ -113,10 +141,12 @@ public class CarRentalSystemController {
 
         return "redirect:/panel"; // Lub inna strona docelowa po dodaniu roweru
     }
-    @PostMapping("/deleteBike/{CarId}")
+    @PostMapping("/deleteCars/{CarId}")
     public String deleteBike(@PathVariable Long carId) {
         carService.deleteCar(carId);
 
         return "redirect:/panel"; // Lub inna strona docelowa po usunięciu roweru
     }
+
+
 }

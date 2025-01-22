@@ -26,4 +26,11 @@ public class CarServiceImp implements CarService {
     public List<Cars> getAllCars() {
         return carRepository.findAll();
     }
+
+    @Override
+    public List<Cars> getAvailableCars() {
+        // Implementacja zwracająca dostępne rowery
+        return carRepository.findByAvailableTrue();
+    }
 }
+
