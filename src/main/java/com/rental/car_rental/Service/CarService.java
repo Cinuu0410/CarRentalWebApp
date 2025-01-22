@@ -9,4 +9,5 @@ public interface CarService {
 
     void deleteCar(Long carId);
     List<Cars> getAllCars();
+    List<Cars> getAvailableCars();
 }
