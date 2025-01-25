@@ -73,12 +73,12 @@
                 <td th:text="${car.number}">Numer samochodu</td>
                 <td th:text="${car.brand}">Marka</td>
                 <td th:text="${car.available ? 'Dostępny' : 'Niedostępny'}">Dostępność</td>
-<!--                <td>-->
-<!--                    <button class="btn btn-primary">Edytuj</button>-->
-<!--                    <form th:action="@{'/deleteCars/' + ${car.id}}" method="post" style="display: inline;">-->
-<!--                        <button class="btn btn-danger" type="submit">Usuń</button>-->
-<!--                    </form>-->
-<!--                </td>-->
+                <td>
+                    <button class="btn btn-primary">Edytuj</button>
+                    <form th:action="@{'/deleteCars/' + ${car.id}}" method="post" style="display: inline;">
+                        <button class="btn btn-danger" type="submit">Usuń</button>
+                    </form>
+                </td>
             </tr>
         </th:block>
         </tbody>

@@ -142,8 +142,8 @@ public class CarRentalSystemController {
         return "redirect:/panel"; // Lub inna strona docelowa po dodaniu roweru
     }
     @PostMapping("/deleteCars/{CarId}")
-    public String deleteBike(@PathVariable Long carId) {
-        carService.deleteCar(carId);
+    public String deleteBike(@PathVariable("CarId") Long CarId) {
+        carService.deleteCar(CarId);
 
         return "redirect:/panel"; // Lub inna strona docelowa po usunięciu roweru
     }

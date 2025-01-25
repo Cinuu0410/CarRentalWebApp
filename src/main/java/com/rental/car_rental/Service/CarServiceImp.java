@@ -20,6 +20,7 @@ public class CarServiceImp implements CarService {
 
     @Override
     public void deleteCar(Long carId) {
+        carRepository.deleteById(carId);
 
     }
     @Override
