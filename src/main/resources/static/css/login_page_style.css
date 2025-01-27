@@ -157,29 +157,15 @@ a:hover span:nth-child(4) {
     }
 }
 
-.alert {
-    width: 100%;
-    margin-bottom: 20px;
-    padding: 10px;
-    border-radius: 5px;
-    font-size: 16px;
-    text-align: center;
-    color: #fff;
-    margin-top: 10px;
-    position: relative;
-}
-
-.alert.success {
-    background-color: #4CAF50;
-}
-
 .alert.error {
     background-color: #f44336;
 }
+
 .login-box form button {
     display: block;
     margin: 0 auto;
 }
+
 .login-box form button[type="submit"] {
     position: absolute;
     top: 0;

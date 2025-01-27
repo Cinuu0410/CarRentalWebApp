@@ -29,9 +29,22 @@
             <column name="password" value="abe31fe1a2113e7e8bf174164515802806d388cf4f394cceace7341a182271ab"/> <!-- haslo -->
             <column name="role" value="Uzytkownik"/>
         </insert>
-        <insert tableName="cars">
+    </changeSet>
+
+    <changeSet id="car-inserts" author="">
+        <insert tableName="car">
             <column name="number" value="27012"/>
             <column name="brand" value="BMW"/>
+            <column name="available" value="true"/>
+        </insert>
+        <insert tableName="car">
+            <column name="number" value="27013"/>
+            <column name="brand" value="Skoda"/>
+            <column name="available" value="true"/>
+        </insert>
+        <insert tableName="car">
+            <column name="number" value="27014"/>
+            <column name="brand" value="Alfa Romeo"/>
             <column name="available" value="true"/>
         </insert>
     </changeSet>

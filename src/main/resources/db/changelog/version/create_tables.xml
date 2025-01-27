@@ -53,21 +53,10 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <createTable tableName="cars">
-            <column name="id" type="BIGINT" autoIncrement="true">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="number" type="INTEGER">
-                <constraints unique="true" nullable="false"/>
-            </column>
-            <column name="brand" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="available" type="BOOLEAN">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
+    </changeSet>
 
+    <changeSet id="issue-table-create" author="admin">
+<!--        Tabel issue-->
         <createTable tableName="issue">
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
@@ -80,4 +69,27 @@
             </column>
         </createTable>
     </changeSet>
+
+
+<changeSet id="car-table-create" author="admin">
+    <!--  Tabela car  -->
+    <createTable tableName="car">
+        <column name="id" type="BIGINT" autoIncrement="true">
+            <constraints primaryKey="true" nullable="false"/>
+        </column>
+        <column name="number" type="INTEGER">
+            <constraints unique="true" nullable="false"/>
+        </column>
+        <column name="brand" type="VARCHAR(255)">
+            <constraints nullable="false"/>
+        </column>
+        <column name="image" type="BLOB">
+            <constraints nullable="true"/>
+        </column>
+        <column name="available" type="BOOLEAN">
+            <constraints nullable="false"/>
+        </column>
+    </createTable>
+</changeSet>
+
 </databaseChangeLog>

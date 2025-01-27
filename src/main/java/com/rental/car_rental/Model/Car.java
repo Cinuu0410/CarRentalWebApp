@@ -5,14 +5,18 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "cars")
-public class Cars {
+@Table(name = "car")
+public class Car {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
+
     private Long number;
     private String brand;
+
+    @Lob
+    private byte[] image;
+
     private boolean available;
 }

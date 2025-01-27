@@ -1,23 +1,27 @@
 package com.rental.car_rental.Controller;
 
 import com.rental.car_rental.Enum.UserRole;
-import com.rental.car_rental.Model.Cars;
+import com.rental.car_rental.Model.Car;
 import com.rental.car_rental.Model.User;
 import com.rental.car_rental.Service.CarService;
 import com.rental.car_rental.Service.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.math.BigDecimal;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @Data
@@ -80,72 +84,171 @@ public class CarRentalSystemController {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
 
         if (loggedInUser != null) {
-            // Pobierz informacje o zalogowanym użytkowniku
             Long userId = loggedInUser.getId();
             String loggedRole = userService.getRole(userId);
-
             if (!loggedRole.equals(UserRole.ADMINISTRATOR.getRoleName())) {
-                // Użytkownik nie ma roli SUPER_USER, przekieruj na stronę główną
                 return "redirect:/main_page";
             }
-            // Zapisz informacje o zalogowanym użytkowniku i roli w sesji
             session.setAttribute("loggedInUser", loggedInUser);
             session.setAttribute("role", loggedRole);
-            // Dodaj informacje o zalogowanym użytkowniku do modelu
             model.addAttribute("loggedInUser", loggedInUser);
             model.addAttribute("role", loggedRole);
-            List<Cars> getAllCars = carService.getAllCars();
-            model.addAttribute("getAllCars", getAllCars);
-
         }
         else {
             return "redirect:/login";
         }
+        List<Car> getAllCars = carService.getAllCars();
+        model.addAttribute("getAllCars", getAllCars);
         return "panel";
     }
+
     @GetMapping("/rent")
     public String rentPage(Model model, HttpSession session) {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
 
         if (loggedInUser != null) {
-            // Pobierz informacje o zalogowanym użytkowniku
-
-            // Dodaj informacje o zalogowanym użytkowniku do modelu
+            Long userId = loggedInUser.getId();
+            String loggedRole = userService.getRole(userId);
+            session.setAttribute("loggedInUser", loggedInUser);
+            session.setAttribute("role", loggedRole);
             model.addAttribute("loggedInUser", loggedInUser);
-
-
-
-
+            model.addAttribute("role", loggedRole);
         }
 
-//        // Pobierz listę dostępnych rowerów z serwisu
-        List<Cars> availableCars = carService.getAvailableCars();
-        model.addAttribute("availableCars", availableCars);
-
-        List<Cars> getAllCars = carService.getAllCars();
+        List<Car> getAllCars = carService.getAllCars();
         model.addAttribute("getAllCars", getAllCars);
 
         return "rent_page";
     }
 
-    @PostMapping("/addCar")
-    public String addCars(@RequestParam("carNumber") String carNumber,
-                          @RequestParam("carBrand") String carBrand,
-                          @RequestParam("carAvailable") boolean carAvailable) {
-        Cars newCar = new Cars();
-        newCar.setNumber(Long.valueOf(carNumber));
-        newCar.setBrand(carBrand);
-        newCar.setAvailable(carAvailable);
+    @GetMapping("/car/image/{id}")
+    @ResponseBody
+    public ResponseEntity<byte[]> getCarImage(@PathVariable("id") Long carId) {
+        Optional<Car> car = carService.findById(carId);
 
-        carService.saveCar(newCar);
+        if (carId == 1) {
+            return getLocalImage("car1.jpg");
+        } else if (carId == 2) {
+            return getLocalImage("car2.jpg");
+        } else if (carId == 3) {
+            return getLocalImage("car3.jpg");
+        }
 
-        return "redirect:/panel"; // Lub inna strona docelowa po dodaniu roweru
+        if (car.isPresent() && car.get().getImage() != null) {
+            byte[] imageBytes = car.get().getImage();
+
+            String contentType = "image/jpeg";
+
+            if (isPng(imageBytes)) {
+                contentType = "image/png";
+            } else if (isGif(imageBytes)) {
+                contentType = "image/gif";
+            }
+
+            return ResponseEntity.ok()
+                    .contentType(MediaType.parseMediaType(contentType))
+                    .body(imageBytes);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
+
+    private ResponseEntity<byte[]> getLocalImage(String filename) {
+        try {
+            File file = new File("src/main/resources/static/images/" + filename);
+            byte[] imageBytes = Files.readAllBytes(file.toPath());
+            MediaType mediaType = getMediaTypeForFile(filename);
+            return ResponseEntity.ok()
+                    .contentType(mediaType)
+                    .body(imageBytes);
+        } catch (IOException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    private MediaType getMediaTypeForFile(String filename) {
+        if (filename.endsWith(".png")) {
+            return MediaType.IMAGE_PNG;
+        } else if (filename.endsWith(".gif")) {
+            return MediaType.IMAGE_GIF;
+        } else if (filename.endsWith(".jpg") || filename.endsWith(".jpeg")) {
+            return MediaType.IMAGE_JPEG;
+        } else {
+            return MediaType.APPLICATION_OCTET_STREAM;
+        }
+    }
+
+
+    private boolean isPng(byte[] imageBytes) {
+        return imageBytes.length > 8 && imageBytes[0] == (byte) 0x89 && imageBytes[1] == (byte) 0x50
+                && imageBytes[2] == (byte) 0x4E && imageBytes[3] == (byte) 0x47;
+    }
+
+    private boolean isGif(byte[] imageBytes) {
+        return imageBytes.length > 6 && imageBytes[0] == 'G' && imageBytes[1] == 'I' && imageBytes[2] == 'F';
+    }
+
+    @PostMapping("/addCar")
+    public String addCars(@RequestParam("carNumber") Long carNumber,
+                          @RequestParam("carBrand") String carBrand,
+                          @RequestParam("carAvailable") boolean carAvailable,
+                          @RequestParam("image") MultipartFile image){
+        try{
+            carService.saveCar(carNumber, carBrand, carAvailable, image);
+            return "redirect:/panel";
+        }catch (IOException e) {
+        e.printStackTrace();
+        return "error_page";
+        }
+    }
+
+    @GetMapping("/edit-car/{id}")
+    public String editCarsPage(@PathVariable("id") Long carId, Model model, HttpSession session) {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+
+        if (loggedInUser != null) {
+            Long userId = loggedInUser.getId();
+            String loggedRole = userService.getRole(userId);
+            session.setAttribute("loggedInUser", loggedInUser);
+            session.setAttribute("role", loggedRole);
+            model.addAttribute("loggedInUser", loggedInUser);
+            model.addAttribute("role", loggedRole);
+        }else {
+            return "redirect:/login";
+        }
+
+        Optional<Car> car = carService.findById(carId);
+        if (car.isPresent()) {
+            Car carEntity = car.get();
+            model.addAttribute("car", carEntity);
+            return "edit_car_page";
+        } else {
+            return "redirect:/panel?error=CarNotFound";
+        }
+    }
+
+    @PostMapping("/edit-car")
+    public String editEvent(
+            @RequestParam("carId") Long carId,
+            @RequestParam("number") Long number,
+            @RequestParam("brand") String brand,
+            @RequestParam("available") Boolean available,
+            @RequestParam(value = "image", required = false) MultipartFile image) {
+
+        try {
+            carService.editCar(carId, number, brand, available, image);
+            return "redirect:/panel";
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "error_page";
+        }
+    }
+
     @PostMapping("/deleteCars/{CarId}")
     public String deleteBike(@PathVariable("CarId") Long CarId) {
         carService.deleteCar(CarId);
 
-        return "redirect:/panel"; // Lub inna strona docelowa po usunięciu roweru
+        return "redirect:/panel";
     }
 
 
