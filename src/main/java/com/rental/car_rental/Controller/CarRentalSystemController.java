@@ -50,7 +50,7 @@ public class CarRentalSystemController {
     }
 
     @GetMapping("/contact")
-    public String contact(Model model, HttpSession session) {
+    public String contactPage(Model model, HttpSession session) {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
 
         if (loggedInUser != null) {
@@ -79,6 +79,36 @@ public class CarRentalSystemController {
         return "about_us_page";
     }
 
+    @GetMapping("/price_list")
+    public String priceListPage(Model model, HttpSession session) {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+
+        if (loggedInUser != null) {
+            Long userId = loggedInUser.getId();
+            String loggedRole = userService.getRole(userId);
+            session.setAttribute("loggedInUser", loggedInUser);
+            session.setAttribute("role", loggedRole);
+            model.addAttribute("loggedInUser", loggedInUser);
+            model.addAttribute("role", loggedRole);
+        }
+        return "price-list_page";
+    }
+
+    @GetMapping("/calculate")
+    public String calculatePage(Model model, HttpSession session) {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+
+        if (loggedInUser != null) {
+            Long userId = loggedInUser.getId();
+            String loggedRole = userService.getRole(userId);
+            session.setAttribute("loggedInUser", loggedInUser);
+            session.setAttribute("role", loggedRole);
+            model.addAttribute("loggedInUser", loggedInUser);
+            model.addAttribute("role", loggedRole);
+        }
+        return "calculate_page";
+    }
+
     @GetMapping("/panel")
     public String panelPage(Model model, HttpSession session) {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
@@ -97,9 +127,54 @@ public class CarRentalSystemController {
         else {
             return "redirect:/login";
         }
+
+        return "panel";
+    }
+
+    @GetMapping("/edit_cars_page")
+    public String editCarsPage(Model model, HttpSession session) {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+
+        if (loggedInUser != null) {
+            Long userId = loggedInUser.getId();
+            String loggedRole = userService.getRole(userId);
+            if (!loggedRole.equals(UserRole.ADMINISTRATOR.getRoleName())) {
+                return "redirect:/main_page";
+            }
+            session.setAttribute("loggedInUser", loggedInUser);
+            session.setAttribute("role", loggedRole);
+            model.addAttribute("loggedInUser", loggedInUser);
+            model.addAttribute("role", loggedRole);
+        }
+        else {
+            return "redirect:/login";
+        }
         List<Car> getAllCars = carService.getAllCars();
         model.addAttribute("getAllCars", getAllCars);
-        return "panel";
+        return "edit_cars_page";
+    }
+
+    @GetMapping("/add_cars_page")
+    public String addCarsPage(Model model, HttpSession session) {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+
+        if (loggedInUser != null) {
+            Long userId = loggedInUser.getId();
+            String loggedRole = userService.getRole(userId);
+            if (!loggedRole.equals(UserRole.ADMINISTRATOR.getRoleName())) {
+                return "redirect:/main_page";
+            }
+            session.setAttribute("loggedInUser", loggedInUser);
+            session.setAttribute("role", loggedRole);
+            model.addAttribute("loggedInUser", loggedInUser);
+            model.addAttribute("role", loggedRole);
+        }
+        else {
+            return "redirect:/login";
+        }
+        List<Car> getAllCars = carService.getAllCars();
+        model.addAttribute("getAllCars", getAllCars);
+        return "add_cars_page";
     }
 
     @GetMapping("/rent")
@@ -250,6 +325,4 @@ public class CarRentalSystemController {
 
         return "redirect:/panel";
     }
-
-
 }

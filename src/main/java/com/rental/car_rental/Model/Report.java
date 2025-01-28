@@ -25,6 +25,6 @@ public class Report {
     private String description;
 
     @Column(name = "is_resolved")
-    private String isResolved;
+    private Boolean isResolved;
 }
 

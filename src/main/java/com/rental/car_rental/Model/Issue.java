@@ -14,7 +14,6 @@ public class Issue {
     private String carNumber;
     private String description;
 
-    // Gettery i settery
     public Long getId() {
         return id;
     }

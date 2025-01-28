@@ -1,15 +1,15 @@
 html, body {
     height: 100%;
     margin: 0;
+    font-family: Arial, sans-serif;
 }
 
 body {
-    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
     font-size: 16px;
     margin: 0;
     padding: 0;
-    display: flex;
-    flex-direction: column;
 }
 
 header {
@@ -157,70 +157,123 @@ footer {
     width: 100%;
 }
 
-.carousel {
-    z-index: 1000;
+.carsList {
+    margin: 30px auto;
+    padding: 20px;
+    max-width: 1200px;
 }
 
-.carousel-inner img {
+/* Układ siatki dla kart */
+.cars-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+/* Styl dla karty samochodu */
+.car-card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.car-card:hover {
+    transform: scale(1.05);
+}
+
+/* Styl dla obrazka samochodu */
+.car-image img {
     width: 100%;
-    height: 300px;
+    height: 200px;
     object-fit: cover;
-    object-position: center;
-    margin: 0 auto;
+    border-radius: 10px;
 }
 
-.carousel-inner .carousel-item:nth-child(1) img {
-    object-position: 40% 50%;
+/* Styl dla szczegółów samochodu */
+.car-details {
+    margin-top: 15px;
 }
 
-.carousel-inner .carousel-item:nth-child(3) img {
-    object-position: 30% 65%;
+.car-details h3 {
+    font-size: 22px;
+    margin: 10px 0;
+    color: #333;
+    font-weight: bold;
 }
 
-.carousel-inner .carousel-item:nth-child(5) img {
-    object-position: 50% 80%;
+.car-details p {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 10px;
 }
 
-@media (max-width: 768px) {
-    .menu-toggle {
-        position: absolute;
-        top: 10px;
-        left: 10px;
-    }
-
-    .auth-buttons {
-        flex-direction: row;
-    }
-
-    .register-button, .login-button {
-        padding: 8px 16px;
-        font-size: 12px;
-    }
-
-    .side-menu ul {
-        flex-direction: column;
-    }
-
-    .side-menu ul li a {
-        padding: 10px;
-    }
+/* Styl dla dostępności */
+.available {
+    color: green;
+    font-weight: bold;
 }
 
-@media (max-width: 480px) {
-    body {
-        font-size: 14px;
-    }
+.not-available {
+    color: red;
+    font-weight: bold;
+}
 
-    footer p {
-        text-align: center;
-    }
+.car-options {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
 
-    .register-button, .login-button {
-        font-size: 10px;
-        padding: 6px 12px;
-    }
-    .btn-secondary {
-        margin-right: 10px;
-        border: none;
-    }
+.car-options .btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.car-options .btn-primary {
+    background-color: #007bff;
+    color: white;
+}
+
+.car-options .btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.car-options .btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+.car-options .btn-danger:hover {
+    background-color: #c82333;
+}
+
+.admin-btn {
+    display: inline-block;
+    text-align: center;
+    background-color: #007bff;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+}
+
+.admin-btn:hover {
+    background-color: #0056b3;
+    text-decoration: none;
 }

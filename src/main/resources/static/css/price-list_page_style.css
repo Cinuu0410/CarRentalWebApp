@@ -157,70 +157,110 @@ footer {
     width: 100%;
 }
 
-.carousel {
-    z-index: 1000;
+h1 {
+    text-align: center;
+    margin: 20px 0;
+    color: #444;
 }
 
-.carousel-inner img {
-    width: 100%;
-    height: 300px;
-    object-fit: cover;
-    object-position: center;
+.pricing-container {
+    padding: 20px;
+    max-width: 1200px;
     margin: 0 auto;
 }
 
-.carousel-inner .carousel-item:nth-child(1) img {
-    object-position: 40% 50%;
+.pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
 }
 
-.carousel-inner .carousel-item:nth-child(3) img {
-    object-position: 30% 65%;
+.pricing-card {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transform: scale(0.9);
+    opacity: 0;
+    animation: fadeIn 0.6s forwards ease-in-out;
 }
 
-.carousel-inner .carousel-item:nth-child(5) img {
-    object-position: 50% 80%;
+.pricing-card:nth-child(odd) {
+    animation-delay: 0.2s;
 }
 
-@media (max-width: 768px) {
-    .menu-toggle {
-        position: absolute;
-        top: 10px;
-        left: 10px;
-    }
+.pricing-card:nth-child(even) {
+    animation-delay: 0.4s;
+}
 
-    .auth-buttons {
-        flex-direction: row;
-    }
+.pricing-card h2 {
+    font-size: 24px;
+    color: #222;
+    margin-bottom: 10px;
+}
 
-    .register-button, .login-button {
-        padding: 8px 16px;
-        font-size: 12px;
-    }
+.pricing-card p {
+    font-size: 16px;
+    margin: 5px 0;
+}
 
-    .side-menu ul {
-        flex-direction: column;
-    }
+.pricing-card .price {
+    font-weight: bold;
+    color: #007bff;
+}
 
-    .side-menu ul li a {
-        padding: 10px;
+.rent-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    margin-top: 15px;
+}
+
+.rent-btn:hover {
+    background-color: #218838;
+    transform: scale(1.1);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
     }
 }
 
-@media (max-width: 480px) {
-    body {
-        font-size: 14px;
-    }
+.pricing-card.bmw {
+    border-top: 5px solid #007bff;
+}
 
-    footer p {
-        text-align: center;
-    }
+.pricing-card.skoda {
+    border-top: 5px solid #28a745;
+}
 
-    .register-button, .login-button {
-        font-size: 10px;
-        padding: 6px 12px;
-    }
-    .btn-secondary {
-        margin-right: 10px;
-        border: none;
-    }
+.pricing-card.alfa-romeo {
+    border-top: 5px solid #dc3545;
+}
+
+.pricing-card.opel {
+    border-top: 5px solid #ffc107;
+}
+
+.pricing-card.bugatti {
+    border-top: 5px solid #6f42c1;
+}
+
+.pricing-card.toyota {
+    border-top: 5px solid #000000;
 }
