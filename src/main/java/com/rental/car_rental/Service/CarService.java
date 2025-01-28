@@ -69,4 +69,18 @@ public class CarService {
     public Optional<Car> findById(Long id) {
         return carRepository.findById(id);
     }
+
+    public Car getCarById(Long id) {
+        return carRepository.findById(id).orElse(null);
+    }
+
+    public void setCarUnavailable(Long carId) {
+        Car car = carRepository.findById(carId).orElse(null);
+        if (car != null) {
+            car.setAvailable(false);
+            carRepository.save(car);
+        } else {
+            throw new IllegalArgumentException("Car not found");
+        }
+    }
 }

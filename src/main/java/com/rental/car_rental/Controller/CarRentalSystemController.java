@@ -5,6 +5,7 @@ import com.rental.car_rental.Model.Car;
 import com.rental.car_rental.Model.User;
 import com.rental.car_rental.Service.CarService;
 import com.rental.car_rental.Service.UserService;
+import com.rental.car_rental.Service.WalletService;
 import jakarta.servlet.http.HttpSession;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +15,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,8 +30,12 @@ public class CarRentalSystemController {
 
     @Autowired
     private final UserService userService;
+
+    @Autowired
     private final CarService carService;
 
+    @Autowired
+    private final WalletService walletService;
 
 
     @GetMapping("/main_page")
@@ -45,7 +50,9 @@ public class CarRentalSystemController {
             session.setAttribute("role", loggedRole);
             model.addAttribute("loggedInUser", loggedInUser);
             model.addAttribute("role", loggedRole);
+            setWalletBalanceInModelAndSession(loggedInUser, session, model);
         }
+
         return "main_page";
     }
 
@@ -60,6 +67,7 @@ public class CarRentalSystemController {
             session.setAttribute("role", loggedRole);
             model.addAttribute("loggedInUser", loggedInUser);
             model.addAttribute("role", loggedRole);
+            setWalletBalanceInModelAndSession(loggedInUser, session, model);
         }
         return "contact_page";
     }
@@ -75,6 +83,7 @@ public class CarRentalSystemController {
             session.setAttribute("role", loggedRole);
             model.addAttribute("loggedInUser", loggedInUser);
             model.addAttribute("role", loggedRole);
+            setWalletBalanceInModelAndSession(loggedInUser, session, model);
         }
         return "about_us_page";
     }
@@ -90,6 +99,7 @@ public class CarRentalSystemController {
             session.setAttribute("role", loggedRole);
             model.addAttribute("loggedInUser", loggedInUser);
             model.addAttribute("role", loggedRole);
+            setWalletBalanceInModelAndSession(loggedInUser, session, model);
         }
         return "price-list_page";
     }
@@ -105,6 +115,7 @@ public class CarRentalSystemController {
             session.setAttribute("role", loggedRole);
             model.addAttribute("loggedInUser", loggedInUser);
             model.addAttribute("role", loggedRole);
+            setWalletBalanceInModelAndSession(loggedInUser, session, model);
         }
         return "calculate_page";
     }
@@ -123,8 +134,8 @@ public class CarRentalSystemController {
             session.setAttribute("role", loggedRole);
             model.addAttribute("loggedInUser", loggedInUser);
             model.addAttribute("role", loggedRole);
-        }
-        else {
+            setWalletBalanceInModelAndSession(loggedInUser, session, model);
+        } else {
             return "redirect:/login";
         }
 
@@ -145,8 +156,8 @@ public class CarRentalSystemController {
             session.setAttribute("role", loggedRole);
             model.addAttribute("loggedInUser", loggedInUser);
             model.addAttribute("role", loggedRole);
-        }
-        else {
+            setWalletBalanceInModelAndSession(loggedInUser, session, model);
+        } else {
             return "redirect:/login";
         }
         List<Car> getAllCars = carService.getAllCars();
@@ -168,8 +179,8 @@ public class CarRentalSystemController {
             session.setAttribute("role", loggedRole);
             model.addAttribute("loggedInUser", loggedInUser);
             model.addAttribute("role", loggedRole);
-        }
-        else {
+            setWalletBalanceInModelAndSession(loggedInUser, session, model);
+        } else {
             return "redirect:/login";
         }
         List<Car> getAllCars = carService.getAllCars();
@@ -188,6 +199,7 @@ public class CarRentalSystemController {
             session.setAttribute("role", loggedRole);
             model.addAttribute("loggedInUser", loggedInUser);
             model.addAttribute("role", loggedRole);
+            setWalletBalanceInModelAndSession(loggedInUser, session, model);
         }
 
         List<Car> getAllCars = carService.getAllCars();
@@ -267,13 +279,13 @@ public class CarRentalSystemController {
     public String addCars(@RequestParam("carNumber") Long carNumber,
                           @RequestParam("carBrand") String carBrand,
                           @RequestParam("carAvailable") boolean carAvailable,
-                          @RequestParam("image") MultipartFile image){
-        try{
+                          @RequestParam("image") MultipartFile image) {
+        try {
             carService.saveCar(carNumber, carBrand, carAvailable, image);
             return "redirect:/panel";
-        }catch (IOException e) {
-        e.printStackTrace();
-        return "error_page";
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "error_page";
         }
     }
 
@@ -288,7 +300,7 @@ public class CarRentalSystemController {
             session.setAttribute("role", loggedRole);
             model.addAttribute("loggedInUser", loggedInUser);
             model.addAttribute("role", loggedRole);
-        }else {
+        } else {
             return "redirect:/login";
         }
 
@@ -324,5 +336,115 @@ public class CarRentalSystemController {
         carService.deleteCar(CarId);
 
         return "redirect:/panel";
+    }
+
+    private void setWalletBalanceInModelAndSession(User loggedInUser, HttpSession session, Model model) {
+        BigDecimal walletBalance = walletService.getBalance(loggedInUser.getId());
+        if (walletBalance == null) {
+            walletBalance = BigDecimal.ZERO;
+            session.setAttribute("walletBalance", walletBalance);
+        }
+        model.addAttribute("walletBalance", walletBalance);
+    }
+
+    @GetMapping("/manage_users_funds")
+    public String manageUsersFunds(HttpSession session, Model model) {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+
+        if (loggedInUser != null) {
+            Long userId = loggedInUser.getId();
+            String loggedRole = userService.getRole(userId);
+            session.setAttribute("loggedInUser", loggedInUser);
+            session.setAttribute("role", loggedRole);
+            model.addAttribute("loggedInUser", loggedInUser);
+            model.addAttribute("role", loggedRole);
+            setWalletBalanceInModelAndSession(loggedInUser, session, model);
+        } else {
+            return "redirect:/login";
+        }
+
+        List<User> allUsers = userService.getAllUsers();
+        model.addAttribute("allUsers", allUsers);
+        return "manage_users_funds_page";
+    }
+
+    @PostMapping("/add_funds_to_user")
+    public String addFundsToUser(@RequestParam("username") String username,
+                                 @RequestParam("amount") BigDecimal amount,
+                                 HttpSession session,
+                                 RedirectAttributes redirectAttributes) {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+
+        if (loggedInUser != null) {
+            User user = userService.getUserByUsername(username);
+            if (user != null) {
+                try {
+                    walletService.addToBalance(user, amount);
+                    redirectAttributes.addFlashAttribute("message", "Fundusze zostały dodane pomyślnie!");
+                } catch (Exception e) {
+                    redirectAttributes.addFlashAttribute("message", "Wystąpił błąd: " + e.getMessage());
+                }
+            } else {
+                redirectAttributes.addFlashAttribute("message", "Użytkownik nie został znaleziony.");
+            }
+        } else {
+            return "redirect:/login";
+        }
+        return "redirect:/manage_users_funds";
+    }
+
+    @GetMapping("/reserve_car/{carId}")
+    public String showReservationPage(@PathVariable Long carId, Model model, HttpSession session) {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+
+        if (loggedInUser != null) {
+            Long userId = loggedInUser.getId();
+            String loggedRole = userService.getRole(userId);
+            session.setAttribute("loggedInUser", loggedInUser);
+            session.setAttribute("role", loggedRole);
+            model.addAttribute("loggedInUser", loggedInUser);
+            model.addAttribute("role", loggedRole);
+            setWalletBalanceInModelAndSession(loggedInUser, session, model);
+        } else {
+            return "redirect:/login";
+        }
+
+        Car car = carService.getCarById(carId);
+        if (car == null) {
+            return "redirect:/error";
+        }
+        model.addAttribute("car", car);
+        model.addAttribute("carBrand", car.getBrand());
+        return "reserve_car_page";
+    }
+
+    @PostMapping("/confirm_reservation")
+    public String confirmReservation(@RequestParam("carId") Long carId, @RequestParam("amount") BigDecimal amount, HttpSession session, Model model, RedirectAttributes redirectAttributes) {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+
+        if (loggedInUser != null) {
+            Long userId = loggedInUser.getId();
+            String loggedRole = userService.getRole(userId);
+            session.setAttribute("loggedInUser", loggedInUser);
+            session.setAttribute("role", loggedRole);
+            model.addAttribute("loggedInUser", loggedInUser);
+            model.addAttribute("role", loggedRole);
+            setWalletBalanceInModelAndSession(loggedInUser, session, model);
+        } else {
+            return "redirect:/login";
+        }
+
+        System.out.println("CarId: " + carId);
+        System.out.println("Amount: " + amount);
+        carService.setCarUnavailable(carId);
+        walletService.deductFromBalance(loggedInUser, amount);
+
+        redirectAttributes.addFlashAttribute("successMessage", "Samochód został zarezerwowany");
+        return "redirect:/confirm_reservation/success";
+    }
+
+    @GetMapping("/confirm_reservation/success")
+    public String confirmReservationSuccess() {
+        return "confirm_reservation_success_page";
     }
 }

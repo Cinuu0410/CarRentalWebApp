@@ -12,6 +12,7 @@
             <column name="username" value="Admin"/>
             <column name="password" value="10a23e7eacabe2317f458fac266a50233d5d02b31244be70477f4d780b7d2255"/> <!-- hasloo -->
             <column name="role" value="Administrator"/>
+            <column name="wallet" value="0"/>
         </insert>
         <insert tableName="app_user">
             <column name="first_name" value = "Daniel"/>
@@ -20,6 +21,7 @@
             <column name="username" value="Admin2"/>
             <column name="password" value="abe31fe1a2113e7e8bf174164515802806d388cf4f394cceace7341a182271ab"/> <!-- haslo -->
             <column name="role" value="Administrator"/>
+            <column name="wallet" value="0"/>
         </insert>
         <insert tableName="app_user">
             <column name="first_name" value = "Adam"/>
@@ -28,6 +30,7 @@
             <column name="username" value="Kozakooo"/>
             <column name="password" value="abe31fe1a2113e7e8bf174164515802806d388cf4f394cceace7341a182271ab"/> <!-- haslo -->
             <column name="role" value="Uzytkownik"/>
+            <column name="wallet" value="9000"/>
         </insert>
         <insert tableName="app_user">
             <column name="first_name" value = "Piotr"/>
@@ -36,6 +39,7 @@
             <column name="username" value="Piotrus123"/>
             <column name="password" value="abe31fe1a2113e7e8bf174164515802806d388cf4f394cceace7341a182271ab"/> <!-- haslo -->
             <column name="role" value="Uzytkownik"/>
+            <column name="wallet" value="1500"/>
         </insert>
         <insert tableName="app_user">
             <column name="first_name" value = "Kamil"/>
@@ -44,6 +48,7 @@
             <column name="username" value="Kamilekekek"/>
             <column name="password" value="abe31fe1a2113e7e8bf174164515802806d388cf4f394cceace7341a182271ab"/> <!-- haslo -->
             <column name="role" value="Uzytkownik"/>
+            <column name="wallet" value="32000"/>
         </insert>
     </changeSet>
 

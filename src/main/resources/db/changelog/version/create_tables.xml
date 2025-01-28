@@ -28,6 +28,9 @@
             <column name="role" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
+            <column name="wallet" type="DECIMAL(10,2)">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
 

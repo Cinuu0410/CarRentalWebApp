@@ -31,8 +31,13 @@
         <div class="auth-buttons">
                 <span th:if="${loggedInUser}">
                     <span th:if="${role eq 'Administrator'}">
-                    <button type="button" class="btn btn-secondary" onclick="panel()">Panel</button>
-                </span>
+                        <button type="button" class="btn btn-secondary" onclick="panel()">Panel</button>
+                    </span>
+                    <span>
+                        <button type="button" class="btn btn-secondary">
+                            Portfel: <span th:text="${walletBalance}"></span> PLN
+                        </button>
+                    </span>
                     <button type="button" class="btn btn-secondary logout-button" onclick="logout()">Wyloguj się</button>
                 </span>
             <span th:unless="${loggedInUser}">
@@ -59,7 +64,7 @@
                    th:class="${car.available ? 'available' : 'not-available'}">
                 </p>
                 <p th:if="${car.available}">
-                    <button th:text="Zarezerwuj" th:if="${loggedInUser}" th:onclick="'redirectToFinalizeTransactionPage(' + ${car.id} + ')'" />
+                    <button th:text="Zarezerwuj" th:if="${loggedInUser}" th:onclick="'redirectToReserveCarPage(' + ${car.id} + ')'" />
                     <span th:unless="${loggedInUser}">Zaloguj się, aby zarezerwować</span>
                 </p>
             </div>
@@ -87,6 +92,9 @@
     }
     function panel(){
         window.location.href = "/panel";
+    }
+    function redirectToReserveCarPage(carId) {
+        window.location = "/reserve_car/" + carId;
     }
 </script>
 </body>

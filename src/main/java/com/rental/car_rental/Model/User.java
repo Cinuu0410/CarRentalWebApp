@@ -2,6 +2,8 @@ package com.rental.car_rental.Model;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 @Data
 @Entity
 @Table(name = "app_user")
@@ -20,4 +22,6 @@ public class User {
     @Transient
     private String rawPassword;
 
+    @Column(columnDefinition = "DECIMAL(10,2) DEFAULT 0.0")
+    private BigDecimal wallet;
 }

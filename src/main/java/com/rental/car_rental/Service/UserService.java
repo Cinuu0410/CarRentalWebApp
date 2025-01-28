@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.apache.commons.codec.digest.DigestUtils;
 
+import java.util.List;
+
 @Service
 public class UserService {
 
@@ -55,5 +57,9 @@ public class UserService {
 
     public String getRole(Long userId){
         return userRepository.findRole(userId);
+    }
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 }

@@ -29,11 +29,17 @@
             <span th:if="${loggedInUser}" th:text="${'Witaj, ' + loggedInUser.firstName + ' ' + loggedInUser.lastName + '!'}"></span>
         </h1>
         <div class="auth-buttons">
-            <div class="auth-buttons">
                 <span th:if="${loggedInUser}">
+                    <span th:if="${role eq 'Administrator'}">
+                        <button type="button" class="btn btn-secondary" onclick="panel()">Panel</button>
+                    </span>
+                    <span>
+                        <button type="button" class="btn btn-secondary">
+                            Portfel: <span th:text="${walletBalance}"></span> PLN
+                        </button>
+                    </span>
                     <button type="button" class="btn btn-secondary logout-button" onclick="logout()">Wyloguj się</button>
                 </span>
-            </div>
             <span th:unless="${loggedInUser}">
                 <button type="button" class="register-button" onclick="redirectToRegister()">Rejestracja</button>
                 <button type="button" class="login-button" onclick="redirectToLogin()">Logowanie</button>
@@ -94,6 +100,9 @@
     }
     function logout() {
         window.location.href = "/logout";
+    }
+    function panel(){
+        window.location.href = "/panel";
     }
 </script>
 </body>
