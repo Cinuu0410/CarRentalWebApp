@@ -433,10 +433,15 @@ public class CarRentalSystemController {
         } else {
             return "redirect:/login";
         }
-
+        if(!walletService.checkSufficientFunds(loggedInUser, amount)) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Za mało środków na koncie");
+            return "redirect:/confirm_reservation/error";
+        }
         System.out.println("CarId: " + carId);
         System.out.println("Amount: " + amount);
         carService.setCarUnavailable(carId);
+        System.out.println(walletService.checkSufficientFunds(loggedInUser, amount));
+
         walletService.deductFromBalance(loggedInUser, amount);
 
         redirectAttributes.addFlashAttribute("successMessage", "Samochód został zarezerwowany");
@@ -446,5 +451,9 @@ public class CarRentalSystemController {
     @GetMapping("/confirm_reservation/success")
     public String confirmReservationSuccess() {
         return "confirm_reservation_success_page";
+    }
+    @GetMapping("/confirm_reservation/error")
+    public String confirmReservationError() {
+        return "confirm_reservation_error_page";
     }
 }

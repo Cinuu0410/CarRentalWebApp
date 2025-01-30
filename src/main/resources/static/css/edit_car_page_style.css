@@ -78,11 +78,7 @@ body {
     transition: background-color 0.3s ease;
 }
 
-.edit-container button[type="submit"]:hover {
-    background-color: #218838;
-}
-
-.edit-container .admin-btn {
+.edit-container button[type="button"] {
     display: inline-block;
     text-align: center;
     background-color: #007bff;
@@ -97,7 +93,10 @@ body {
     margin-top: 20px;
 }
 
-.edit-container .admin-btn:hover {
-    background-color: #0056b3;
-    text-decoration: none;
+.edit-container button[type="submit"]:hover {
+    background-color: #218838;
 }
+.edit-container button[type="button"]:hover {
+    background-color: #007bff;
+}
+

@@ -1,13 +1,10 @@
 package com.rental.car_rental.Service;
 
 import com.rental.car_rental.Model.User;
-import com.rental.car_rental.Model.Wallet;
 import com.rental.car_rental.Repository.UserRepository;
 import com.rental.car_rental.Repository.WalletRepository;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
 import java.math.BigDecimal;
 
@@ -49,5 +46,18 @@ public class WalletService {
 
         existingUser.setWallet(currentBalance.subtract(amount));
         userRepository.save(existingUser);
+    }
+    public boolean checkSufficientFunds(User user, BigDecimal rentalCost) {
+        User existingUser = userRepository.findById(user.getId())
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        BigDecimal currentBalance = existingUser.getWallet() != null ? existingUser.getWallet() : BigDecimal.ZERO;
+
+        if (currentBalance.compareTo(rentalCost) < 0) {
+            return false;
+
+        }
+        return true;
+
     }
 }
