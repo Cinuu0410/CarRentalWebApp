@@ -10,7 +10,7 @@
     <h2>Logowanie</h2>
     <form th:action="@{/login}" method="post">
 
-        <div th:if="${errorMessage}" class="alert error">
+        <div th:if="${errorMessage}" class="alert error show">
             <p th:text="${errorMessage}"></p>
         </div>
 
@@ -30,21 +30,32 @@
             Zaloguj się
             <button type="submit"></button>
         </a>
-    </form>
-    <h4>Nie masz konta? Zarejestuj się teraz.</h4>
-    <a onclick="redirectToRegister()">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        Rejestracja
+
+        <h4>Nie masz konta? Zarejestuj się teraz.</h4>
+        <a>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            Rejestracja
+            <button type="button" onclick="redirectToRegister()"></button>
         </a>
+    </form>
 </div>
 
 <script>
     function redirectToRegister() {
         window.location.href = "/register";
     }
+</script>
+<script>
+    setTimeout(function() {
+        const alert = document.querySelector('.alert.error');
+        if (alert) {
+            alert.classList.remove('show');
+            alert.classList.add('hide');
+        }
+    }, 5000);
 </script>
 </body>
 </html>

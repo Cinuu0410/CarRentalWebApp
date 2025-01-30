@@ -163,7 +163,6 @@ footer {
     max-width: 1200px;
 }
 
-/* Układ siatki dla kart */
 .cars-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -171,7 +170,6 @@ footer {
     padding: 20px;
 }
 
-/* Styl dla karty samochodu */
 .car-card {
     background-color: white;
     border-radius: 10px;
@@ -188,7 +186,6 @@ footer {
     transform: scale(1.05);
 }
 
-/* Styl dla obrazka samochodu */
 .car-image img {
     width: 100%;
     height: 200px;
@@ -196,7 +193,6 @@ footer {
     border-radius: 10px;
 }
 
-/* Styl dla szczegółów samochodu */
 .car-details {
     margin-top: 15px;
 }
@@ -214,7 +210,6 @@ footer {
     margin-bottom: 10px;
 }
 
-/* Styl dla dostępności */
 .available {
     color: green;
     font-weight: bold;

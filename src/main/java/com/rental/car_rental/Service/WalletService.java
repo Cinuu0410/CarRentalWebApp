@@ -34,7 +34,6 @@ public class WalletService {
         }
     }
 
-    // Odejmowanie środków z portfela użytkownika
     public void deductFromBalance(User user, BigDecimal amount) {
         User existingUser = userRepository.findById(user.getId())
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
@@ -53,11 +52,7 @@ public class WalletService {
 
         BigDecimal currentBalance = existingUser.getWallet() != null ? existingUser.getWallet() : BigDecimal.ZERO;
 
-        if (currentBalance.compareTo(rentalCost) < 0) {
-            return false;
-
-        }
-        return true;
+        return currentBalance.compareTo(rentalCost) >= 0;
 
     }
 }

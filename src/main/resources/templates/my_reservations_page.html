@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Car Rental</title>
-    <link rel="stylesheet" th:href="@{/css/price-list_page_style.css}">
+    <link rel="stylesheet" th:href="@{/css/my_reservations_page_style.css}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
@@ -51,52 +51,31 @@
     </div>
 </header>
 
-<div class="pricing-container">
-    <h1>Cennik wypożyczenia samochodów</h1>
-    <div class="pricing-grid">
-        <div class="pricing-card bmw">
-            <h2>BMW</h2>
-            <p>Cena za dobę: <span class="price">350 zł</span></p>
-            <p>Cena za tydzień: <span class="price">2 100 zł</span></p>
-            <p>Cena za miesiąc: <span class="price">8 000 zł</span></p>
-            <button class="rent-btn" onclick="redirectToRentPage()">Wypożycz</button>
-        </div>
-        <div class="pricing-card skoda">
-            <h2>Skoda</h2>
-            <p>Cena za dobę: <span class="price">200 zł</span></p>
-            <p>Cena za tydzień: <span class="price">1 200 zł</span></p>
-            <p>Cena za miesiąc: <span class="price">4 500 zł</span></p>
-            <button class="rent-btn" onclick="redirectToRentPage()">Wypożycz</button>
-        </div>
-        <div class="pricing-card alfa-romeo">
-            <h2>Alfa Romeo</h2>
-            <p>Cena za dobę: <span class="price">300 zł</span></p>
-            <p>Cena za tydzień: <span class="price">1 800 zł</span></p>
-            <p>Cena za miesiąc: <span class="price">7 000 zł</span></p>
-            <button class="rent-btn" onclick="redirectToRentPage()">Wypożycz</button>
-        </div>
-        <div class="pricing-card opel">
-            <h2>Opel</h2>
-            <p>Cena za dobę: <span class="price">150 zł</span></p>
-            <p>Cena za tydzień: <span class="price">900 zł</span></p>
-            <p>Cena za miesiąc: <span class="price">3 500 zł</span></p>
-            <button class="rent-btn" onclick="redirectToRentPage()">Wypożycz</button>
-        </div>
-        <div class="pricing-card bugatti">
-            <h2>Bugatti</h2>
-            <p>Cena za dobę: <span class="price">2 500 zł</span></p>
-            <p>Cena za tydzień: <span class="price">15 000 zł</span></p>
-            <p>Cena za miesiąc: <span class="price">50 000 zł</span></p>
-            <button class="rent-btn" onclick="redirectToRentPage()">Wypożycz</button>
-        </div>
-        <div class="pricing-card toyota">
-            <h2>Toyota</h2>
-            <p>Cena za dobę: <span class="price">180 zł</span></p>
-            <p>Cena za tydzień: <span class="price">1 050 zł</span></p>
-            <p>Cena za miesiąc: <span class="price">4 000 zł</span></p>
-            <button class="rent-btn" onclick="redirectToRentPage()">Wypożycz</button>
-        </div>
+<section class="my-reservations">
+    <h1>Moje aktywne rezerwacje</h1>
+    <div class="reservations-list">
+        <ul class="reservations-list-ul">
+            <th:block th:each="reservation : ${activeReservations}">
+                <li class="reservation-item">
+                    <p>Samochód: <span th:text="${reservation.car.brand}">Car Brand</span></p>
+                    <p>Numer samochodu: <span th:text="${reservation.car.number}">Car Number</span></p>
+
+                    <th:block th:if="${reservation.status == 'ACTIVE'}">
+                        <form action="/return_car" method="post">
+                            <input type="hidden" name="reservationId" th:value="${reservation.id}"/>
+                            <button type="submit" class="btn btn-return">Zwróć samochód</button>
+                        </form>
+                    </th:block>
+                </li>
+            </th:block>
+        </ul>
     </div>
+</section>
+<div th:if="${successMessage}" class="alert alert-success alert-show">
+    <span th:text="${successMessage}"></span>
+</div>
+<div th:if="${errorMessage}" class="alert alert-danger alert-show">
+    <span th:text="${errorMessage}"></span>
 </div>
 
 <footer>
@@ -119,9 +98,6 @@
     }
     function panel(){
         window.location.href = "/panel";
-    }
-    function redirectToRentPage(){
-        window.location.href = "/rent";
     }
 </script>
 </body>

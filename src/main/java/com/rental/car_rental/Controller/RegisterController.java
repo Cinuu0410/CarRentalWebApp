@@ -31,14 +31,18 @@ public class RegisterController {
             return "redirect:/register";
         }
 
+        if (password.length() < 5) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Hasło musi mieć co najmniej 5 znaków.");
+            return "redirect:/register";
+        }
+
         if (userService != null) {
             userService.register(username, password, firstName, lastName, email, role);
         }
 
         session.setAttribute("username", username);
 
-        redirectAttributes.addFlashAttribute("successMessage", "Rejestracja udana!");
-        redirectAttributes.addFlashAttribute("successMessage2", "Za chwilę zostaniesz przekierowany na stronę logowania.");
+        redirectAttributes.addFlashAttribute("successMessage", "Rejestracja udana! Za chwilę zostaniesz przekierowany na stronę logowania.");
 
         return "redirect:/register/success";
     }

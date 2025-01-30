@@ -18,6 +18,9 @@
             </button>
             <ul>
                 <li><a href="/main_page">Strona główna</a></li>
+                <span th:if="${loggedInUser}">
+                    <li><a href="/my_reservations">Moje rezerwacje</a></li>
+                </span>
                 <li><a href="/rent">Zarezerwuj</a></li>
                 <li><a href="/calculate">Oblicz koszta</a></li>
                 <li><a href="/price_list">Cennik</a></li>

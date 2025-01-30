@@ -2,8 +2,10 @@ package com.rental.car_rental.Controller;
 
 import com.rental.car_rental.Enum.UserRole;
 import com.rental.car_rental.Model.Car;
+import com.rental.car_rental.Model.Reservation;
 import com.rental.car_rental.Model.User;
 import com.rental.car_rental.Service.CarService;
+import com.rental.car_rental.Service.ReservationService;
 import com.rental.car_rental.Service.UserService;
 import com.rental.car_rental.Service.WalletService;
 import jakarta.servlet.http.HttpSession;
@@ -36,6 +38,9 @@ public class CarRentalSystemController {
 
     @Autowired
     private final WalletService walletService;
+
+    @Autowired
+    private final ReservationService reservationService;
 
 
     @GetMapping("/main_page")
@@ -439,6 +444,14 @@ public class CarRentalSystemController {
         }
         System.out.println("CarId: " + carId);
         System.out.println("Amount: " + amount);
+
+        Car car = carService.getCarById(carId);
+        if (car == null || !car.isAvailable()) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Samochód niedostępny");
+            return "redirect:/confirm_reservation/error";
+        }
+        reservationService.createReservation(loggedInUser, car);
+
         carService.setCarUnavailable(carId);
         System.out.println(walletService.checkSufficientFunds(loggedInUser, amount));
 
@@ -452,8 +465,58 @@ public class CarRentalSystemController {
     public String confirmReservationSuccess() {
         return "confirm_reservation_success_page";
     }
+
     @GetMapping("/confirm_reservation/error")
     public String confirmReservationError() {
         return "confirm_reservation_error_page";
+    }
+
+    @GetMapping("/my_reservations")
+    public String myReservationsPage(Model model, HttpSession session){
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+
+        if (loggedInUser != null) {
+            Long userId = loggedInUser.getId();
+            String loggedRole = userService.getRole(userId);
+            session.setAttribute("loggedInUser", loggedInUser);
+            session.setAttribute("role", loggedRole);
+            model.addAttribute("loggedInUser", loggedInUser);
+            model.addAttribute("role", loggedRole);
+            setWalletBalanceInModelAndSession(loggedInUser, session, model);
+        } else {
+            return "redirect:/login";
+        }
+
+        List<Reservation> activeReservations = reservationService.getActiveReservationsByUser(loggedInUser);
+        model.addAttribute("activeReservations", activeReservations);
+
+        return "my_reservations_page";
+    }
+
+    @PostMapping("/return_car")
+    public String returnCar(@RequestParam("reservationId") Long reservationId, RedirectAttributes redirectAttributes) {
+        Optional<Reservation> reservationOptional = reservationService.findById(reservationId);
+
+        if (reservationOptional.isPresent()) {
+            Reservation reservation = reservationOptional.get();
+
+            if ("ACTIVE".equals(reservation.getStatus())) {
+                reservation.setStatus("INACTIVE");
+                reservationService.save(reservation);
+
+                Car car = reservation.getCar();
+                car.setAvailable(true);
+                carService.save(car);
+
+                redirectAttributes.addFlashAttribute("successMessage", "Samochód został zwrócony.");
+                return "redirect:/my_reservations";
+            } else {
+                redirectAttributes.addFlashAttribute("errorMessage", "Rezerwacja nie jest aktywna.");
+                return "redirect:/my_reservations";
+            }
+        } else {
+            redirectAttributes.addFlashAttribute("errorMessage", "Rezerwacja o podanym ID nie istnieje.");
+            return "redirect:/my_reservations";
+        }
     }
 }

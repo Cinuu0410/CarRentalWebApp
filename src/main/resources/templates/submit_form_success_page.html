@@ -7,11 +7,11 @@
     <script>
         setTimeout(function() {
             window.location.href = "/main_page";
-        }, 4000);
+        }, 5000);
     </script>
 </head>
 <body>
-<div class="register-box">
+<div class="alert-box">
     <div class="alert success" th:if="${successMessage}">
         <p th:text="${successMessage}"></p>
     </div>

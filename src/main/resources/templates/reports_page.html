@@ -20,6 +20,9 @@
             </button>
             <ul>
                 <li><a href="/main_page">Strona główna</a></li>
+                <span th:if="${loggedInUser}">
+                    <li><a href="/my_reservations">Moje rezerwacje</a></li>
+                </span>
                 <li><a href="/rent">Zarezerwuj</a></li>
                 <li><a href="/calculate">Oblicz koszta</a></li>
                 <li><a href="/price_list">Cennik</a></li>
@@ -52,6 +55,7 @@
 
 <main class="reports-container">
     <section class="reports-section">
+        <a href="/panel" class="admin-btn">Powrót do panelu administratora</a>
         <button class="toggle-btn" id="toggle-unresolved">
             Pokaż nierozwiązane zgłoszenia
         </button>

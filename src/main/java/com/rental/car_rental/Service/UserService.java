@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.apache.commons.codec.digest.DigestUtils;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -28,6 +29,7 @@ public class UserService {
         newUser.setLastName(lastName);
         newUser.setEmail(email);
         newUser.setRole("Uzytkownik");
+        newUser.setWallet(BigDecimal.valueOf(0));
 
         userRepository.save(newUser);
     }

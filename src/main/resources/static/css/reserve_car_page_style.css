@@ -157,10 +157,17 @@ footer {
     width: 100%;
 }
 
-/* Styl ogólny dla strony rezerwacji */
+.center-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .reserve-container {
     width: 80%;
-    margin: 0 auto;
+    max-width: 600px;
     padding: 20px;
     background-color: #f9f9f9;
     border-radius: 8px;
@@ -174,7 +181,6 @@ h1 {
     margin-bottom: 20px;
 }
 
-/* Sekcja z danymi samochodu */
 .car-details {
     margin-bottom: 30px;
 }
@@ -189,7 +195,6 @@ h1 {
     font-weight: bold;
 }
 
-/* Formularz rezerwacji */
 .reservation-form {
     display: flex;
     flex-direction: column;
@@ -216,7 +221,6 @@ h1 {
     outline: none;
 }
 
-/* Sekcja całkowitego kosztu */
 .price-container {
     margin-top: 15px;
     font-size: 18px;
@@ -229,7 +233,6 @@ h1 {
     color: #e74c3c;
 }
 
-/* Przycisk rezerwacji */
 .btn-confirm-reservation {
     padding: 12px;
     font-size: 18px;
@@ -246,24 +249,26 @@ h1 {
     background-color: #45a049;
 }
 
-/* Przyciski i linki */
 .back-btn {
-    margin-top: 20px;
-    padding: 10px 15px;
-    font-size: 16px;
-    background-color: #ccc;
-    color: #333;
+    display: block;
+    text-align: center;
+    background-color: #007bff;
+    color: white;
+    padding: 12px 20px;
     border: none;
     border-radius: 5px;
+    font-size: 16px;
+    text-decoration: none;
     cursor: pointer;
-    transition: background-color 0.3s;
+    margin: 20px auto;
+    width: auto;
 }
 
 .back-btn:hover {
-    background-color: #bbb;
+    background-color: #0056b3;
+    text-decoration: none;
 }
 
-/* Responsywność */
 @media (max-width: 768px) {
     .reserve-container {
         width: 95%;

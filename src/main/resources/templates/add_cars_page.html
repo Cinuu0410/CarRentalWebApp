@@ -19,6 +19,9 @@
             </button>
             <ul>
                 <li><a href="/main_page">Strona główna</a></li>
+                <span th:if="${loggedInUser}">
+                    <li><a href="/my_reservations">Moje rezerwacje</a></li>
+                </span>
                 <li><a href="/rent">Zarezerwuj</a></li>
                 <li><a href="/calculate">Oblicz koszta</a></li>
                 <li><a href="/price_list">Cennik</a></li>
@@ -32,7 +35,7 @@
         <div class="auth-buttons">
                 <span th:if="${loggedInUser}">
                     <span th:if="${role eq 'Administrator'}">
-                        <button type="button" class="btn btn-secondary" onclick="panel()">Panel</button>
+                        <button type="button" class="btn btn-secondary" onclick="redirectToPanel()">Panel</button>
                     </span>
                     <span>
                         <button type="button" class="btn btn-secondary">
@@ -51,6 +54,7 @@
 
 <div class="add-car-form">
     <h3>Dodaj Samochód</h3>
+    <a href="/panel" class="admin-btn">Powrót do panelu administratora</a>
     <form action="/addCar" method="post" enctype="multipart/form-data">
         <div class="form-group">
             <label for="carNumber">Numer samochodu:</label>
@@ -93,7 +97,7 @@
     function logout() {
         window.location.href = "/logout";
     }
-    function panel() {
+    function redirectToPanel() {
         window.location.href = "/panel";
     }
 </script>
